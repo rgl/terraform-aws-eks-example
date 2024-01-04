@@ -170,6 +170,9 @@ make terraform-destroy
 
 * OpenID Connect Provider for EKS (aka [Enable IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up-enable-IAM.html)) is enabled.
   * a [aws_iam_openid_connect_provider resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) is created.
+* The EKS nodes virtual machines boot from a customizable Amazon Machine Image (AMI).
+  * This example uses the Amazon Linux 2 AMI.
+  * The official AMIs source code is available at the [Amazon EKS AMI awslabs/amazon-eks-ami repository](https://github.com/awslabs/amazon-eks-ami).
 
 # References
 
@@ -181,3 +184,4 @@ make terraform-destroy
 * [EKS Workshop](https://www.eksworkshop.com)
   * [Using Terraform](https://www.eksworkshop.com/docs/introduction/setup/your-account/using-terraform)
     * [aws-samples/eks-workshop-v2 example repository](https://github.com/aws-samples/eks-workshop-v2/tree/main/cluster/terraform)
+* [Official Amazon EKS AMI awslabs/amazon-eks-ami repository](https://github.com/awslabs/amazon-eks-ami)
