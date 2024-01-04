@@ -1,0 +1,8 @@
+.terraform/
+terraform.tfstate*
+terraform-graph.svg
+.vagrant/
+secrets.*
+*.tmp.png
+*.log
+kubeconfig.yml
