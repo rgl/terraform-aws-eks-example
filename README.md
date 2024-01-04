@@ -11,6 +11,7 @@ Install the dependencies:
 * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
 * [Terraform](https://www.terraform.io/downloads.html).
 * [kubectl](https://kubernetes.io/docs/tasks/tools/).
+* [Docker](https://docs.docker.com/engine/install/).
 * [Crane](https://github.com/google/go-containerregistry/releases).
 
 Set the account credentials using SSO:
