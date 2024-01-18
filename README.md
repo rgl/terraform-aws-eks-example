@@ -12,6 +12,8 @@ This will:
   [`images` local variable](ecr.tf), and upload the corresponding container
   images.
 * Demonstrate how to manually deploy a Kubernetes application.
+  * Expose as a Kubernetes `LoadBalancer` `Service`. Note that this results in the creation of an [EC2 Classic Load Balancer (CLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/introduction.html).
+
 # Usage (on a Ubuntu Desktop)
 
 Install the dependencies:
@@ -22,7 +24,7 @@ Install the dependencies:
 * [Docker](https://docs.docker.com/engine/install/).
 * [Crane](https://github.com/google/go-containerregistry/releases).
 
-Set the account credentials using SSO:
+Set the AWS Account credentials using SSO:
 
 ```bash
 # set the account credentials.
@@ -40,7 +42,7 @@ unset AWS_DEFAULT_REGION
 aws sts get-caller-identity
 ```
 
-Or, set the account credentials using an access key:
+Or, set the AWS Account credentials using an Access Key:
 
 ```bash
 # set the account credentials.
@@ -143,14 +145,31 @@ created image repository:
 ```bash
 sed -E "s,ruilopes/example-docker-buildx-go:.+,$image,g" example-app.yml \
   | kubectl apply -f -
+kubectl rollout status daemonset/example
 kubectl get pods,services
 ```
 
 Access the service from a [kubectl port-forward local port](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/):
 
 ```bash
-kubectl port-forward service/example 6789:80
+kubectl port-forward service/example 6789:80 &
 wget -qO- http://localhost:6789
+kill %1
+```
+
+Access the service from the Internet:
+
+```bash
+example_url="http://$(kubectl get service/example -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+wget -qO- "$example_url"
+```
+
+Destroy the example application:
+
+```bash
+sed -E "s,ruilopes/example-docker-buildx-go:.+,$image,g" example-app.yml \
+  | kubectl delete -f -
+kubectl get pods,services
 ```
 
 Destroy the example:
@@ -186,6 +205,7 @@ make terraform-destroy
   * [Amazon Resource Names (ARNs)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
 * [Amazon ECR private registry](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html)
   * [Private registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/registry_auth.html)
+* [Network load balancing on Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html)
 * [EKS Workshop](https://www.eksworkshop.com)
   * [Using Terraform](https://www.eksworkshop.com/docs/introduction/setup/your-account/using-terraform)
     * [aws-samples/eks-workshop-v2 example repository](https://github.com/aws-samples/eks-workshop-v2/tree/main/cluster/terraform)
