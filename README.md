@@ -207,6 +207,8 @@ make terraform-destroy
 * [Amazon ECR private registry](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html)
   * [Private registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/registry_auth.html)
 * [Network load balancing on Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html)
+* [Amazon EKS add-ons](https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html)
+* [Amazon EKS VPC-CNI](https://github.com/aws/amazon-vpc-cni-k8s)
 * [EKS Workshop](https://www.eksworkshop.com)
   * [Using Terraform](https://www.eksworkshop.com/docs/introduction/setup/your-account/using-terraform)
     * [aws-samples/eks-workshop-v2 example repository](https://github.com/aws-samples/eks-workshop-v2/tree/main/cluster/terraform)
