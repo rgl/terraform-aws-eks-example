@@ -153,8 +153,9 @@ Access the service from a [kubectl port-forward local port](https://kubernetes.i
 
 ```bash
 kubectl port-forward service/example 6789:80 &
+sleep 3 && printf '\n\n'
 wget -qO- http://localhost:6789
-kill %1
+kill %1 && sleep 3
 ```
 
 Access the service from the Internet:
