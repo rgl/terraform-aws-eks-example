@@ -6,7 +6,7 @@ terraform {
     # see https://github.com/hashicorp/terraform-provider-aws
     aws = {
       source  = "hashicorp/aws"
-      version = "5.31.0"
+      version = "5.32.1"
     }
     # see https://registry.terraform.io/providers/hashicorp/cloudinit
     # see https://github.com/hashicorp/terraform-provider-cloudinit
@@ -18,7 +18,7 @@ terraform {
     # see https://github.com/hashicorp/terraform-provider-kubernetes
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.24.0"
+      version = "2.25.2"
     }
     # see https://registry.terraform.io/providers/hashicorp/local
     # see https://github.com/hashicorp/terraform-provider-local
