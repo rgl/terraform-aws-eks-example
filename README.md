@@ -4,6 +4,14 @@
 
 This creates an example kubernetes cluster hosted in the [AWS Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) using a terraform program.
 
+This will:
+
+* Create an Elastic Kubernetes Service (EKS)-based Kubernetes cluster.
+  * Enable the [VPC CNI cluster addon](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html).
+* Create the Elastic Container Registry (ECR) repositories declared on the
+  [`images` local variable](ecr.tf), and upload the corresponding container
+  images.
+* Demonstrate how to manually deploy a Kubernetes application.
 # Usage (on a Ubuntu Desktop)
 
 Install the dependencies:
@@ -114,17 +122,11 @@ aws ecr get-login-password \
 
 **NB** This saves the credentials in the `~/.docker/config.json` local file.
 
-Copy an example image into the created container image repository:
+Show the example image manifest that was uploaded into the created container
+image repository:
 
 ```bash
-# see https://hub.docker.com/repository/docker/ruilopes/example-docker-buildx-go
-# see https://github.com/rgl/example-docker-buildx-go
-source_image="docker.io/ruilopes/example-docker-buildx-go:v1.10.0"
-image="$(terraform output -raw example_repository_url):v1.10.0"
-crane copy \
-  --allow-nondistributable-artifacts \
-  "$source_image" \
-  "$image"
+image="$(terraform output --json images | jq -r .example)"
 crane manifest "$image" | jq .
 ```
 
@@ -135,7 +137,8 @@ docker logout \
   "$(terraform output -raw registry_domain)"
 ```
 
-Launch the example application:
+Launch the example application, using the image that was uploaded into the
+created image repository:
 
 ```bash
 sed -E "s,ruilopes/example-docker-buildx-go:.+,$image,g" example-app.yml \
@@ -181,6 +184,8 @@ make terraform-destroy
 * [Managing access keys (console)](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)
 * [AWS General Reference](https://docs.aws.amazon.com/general/latest/gr/Welcome.html)
   * [Amazon Resource Names (ARNs)](https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+* [Amazon ECR private registry](https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html)
+  * [Private registry authentication](https://docs.aws.amazon.com/AmazonECR/latest/userguide/registry_auth.html)
 * [EKS Workshop](https://www.eksworkshop.com)
   * [Using Terraform](https://www.eksworkshop.com/docs/introduction/setup/your-account/using-terraform)
     * [aws-samples/eks-workshop-v2 example repository](https://github.com/aws-samples/eks-workshop-v2/tree/main/cluster/terraform)

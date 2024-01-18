@@ -2,19 +2,21 @@ output "registry_region" {
   # e.g. 123456.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example/example
   #                     ^^^^^^^^^
   #                     region
-  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr.repository_url)["region"]
+  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr_repository["example"].repository_url)["region"]
 }
 
 output "registry_domain" {
   # e.g. 123456.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example/example
   #      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   #      domain
-  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr.repository_url)["domain"]
+  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr_repository["example"].repository_url)["domain"]
 }
 
-output "example_repository_url" {
-  # e.g. 123456.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example/example
-  value = module.ecr.repository_url
+output "images" {
+  # e.g. 123456.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example/example:1.2.3
+  value = {
+    for key, value in local.images : key => "${module.ecr_repository[key].repository_url}:${regex(":(?P<tag>[^:]+)$", value)["tag"]}"
+  }
 }
 
 output "kubernetes_oidc_issuer_url" {
