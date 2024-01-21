@@ -43,9 +43,9 @@ fi
 aws ecr get-login-password \
   --region "$ECR_IMAGE_TARGET_REGION" \
   | crane auth login \
-    --username AWS \
-    --password-stdin \
-    "$target_registry"
+      --username AWS \
+      --password-stdin \
+      "$target_registry"
 
 # manage the image.
 case "$ECR_IMAGE_COMMAND" in
@@ -63,16 +63,24 @@ case "$ECR_IMAGE_COMMAND" in
       exit_code="$?"
       echo "$result"
       if [ "$exit_code" -ne '0' ]; then
-        # treat the 'image not found' error as success. this error may occur
-        # when someone manually deletes the image. from the script's viewpoint,
-        # it is not considered an error, as the ultimate goal is to have a
-        # deleted image. if it is already deleted, consider it a success.
         # TODO drop all the error-handling code around 'crane delete' if
         #      https://github.com/google/go-containerregistry/issues/1862
         #      is implemented. the goal is to simplify error handling once
         #      the issue is resolved.
-        if [[ "$result" =~ 'MANIFEST_UNKNOWN: Requested image not found' ]]; then
+        # treat the 'image not found' error as success. this error may occur
+        # when someone manually deletes the image. from the script's viewpoint,
+        # it is not considered an error, as the ultimate goal is to have a
+        # deleted image. if it is already deleted, consider it a success.
+        unknown_image_regex='MANIFEST_UNKNOWN: Requested image not found'
+        if [[ "$result" =~ $unknown_image_regex ]]; then
           echo "NB The DELETE error was ignored because the image was already deleted."
+          exit 0
+        fi
+        # treat the 'repository not found' error as success, for the same
+        # reasons as the above error.
+        unknown_repository_regex='NAME_UNKNOWN: The repository with name .+ does not exist in the registry '
+        if [[ "$result" =~ $unknown_repository_regex ]]; then
+          echo "NB The DELETE error was ignored because the repository was already deleted."
           exit 0
         fi
         exit "$exit_code"
