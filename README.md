@@ -161,7 +161,11 @@ kill %1 && sleep 3
 Access the service from the Internet:
 
 ```bash
-example_url="http://$(kubectl get service/example -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+example_domain="$(kubectl get service/example -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+example_url="http://$example_domain"
+# wait for the domain to resolve.
+while [ -z "$(dig +short "$example_domain")" ]; do sleep 5; done && dig "$example_domain"
+# finally, access the service.
 wget -qO- "$example_url"
 ```
 
