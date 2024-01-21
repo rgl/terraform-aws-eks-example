@@ -45,8 +45,8 @@ provider "aws" {
   region = var.region
   default_tags {
     tags = {
-      Project     = "aws-eks-example"
-      Environment = "test"
+      Project     = var.project
+      Environment = var.environment
     }
   }
 }

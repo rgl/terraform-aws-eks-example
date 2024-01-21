@@ -1,3 +1,7 @@
+locals {
+  cluster_name = "${var.project}-${var.environment}"
+}
+
 # e.g. 1.27.7-20231230
 # see https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html
 # see https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html
@@ -13,7 +17,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.21"
 
-  cluster_name                   = var.cluster_name
+  cluster_name                   = local.cluster_name
   cluster_version                = var.cluster_version
   cluster_endpoint_public_access = true
 
@@ -57,7 +61,7 @@ module "eks" {
   }
 
   tags = {
-    "karpenter.sh/discovery" = var.cluster_name
+    "karpenter.sh/discovery" = local.cluster_name
   }
 }
 

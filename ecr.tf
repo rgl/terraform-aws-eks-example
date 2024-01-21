@@ -14,7 +14,7 @@ module "ecr_repository" {
   for_each = local.images
 
   repository_type = "private"
-  repository_name = "${var.cluster_name}/${each.key}"
+  repository_name = "${local.cluster_name}/${each.key}"
 
   repository_force_delete       = true
   repository_image_scan_on_push = false
