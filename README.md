@@ -71,21 +71,6 @@ Launch the example:
 make terraform-apply
 ```
 
-**NB** For [a known reason, terraform shows the following Warning message](https://github.com/terraform-aws-modules/terraform-aws-eks/issues/2635):
-
-```
-╷
-│ Warning: Argument is deprecated
-│
-│   with module.eks.aws_eks_addon.before_compute["vpc-cni"],
-│   on .terraform/modules/eks/main.tf line 428, in resource "aws_eks_addon" "before_compute":
-│  428:   resolve_conflicts        = try(each.value.resolve_conflicts, "OVERWRITE")
-│
-│ The "resolve_conflicts" attribute can't be set to "PRESERVE" on initial resource creation. Use "resolve_conflicts_on_create" and/or
-│ "resolve_conflicts_on_update" instead
-╵
-```
-
 Show the terraform state:
 
 ```bash

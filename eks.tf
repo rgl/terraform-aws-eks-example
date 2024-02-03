@@ -15,7 +15,7 @@ data "aws_ssm_parameter" "eks_ami_release_version" {
 # see https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.21"
+  version = "20.0.1"
 
   cluster_name                   = local.cluster_name
   cluster_version                = var.cluster_version
@@ -44,6 +44,8 @@ module "eks" {
   create_cluster_security_group = false
   create_node_security_group    = false
 
+  enable_cluster_creator_admin_permissions = true
+
   eks_managed_node_groups = {
     default = {
       instance_types       = ["m5.large"]
@@ -69,7 +71,7 @@ module "eks" {
 # see https://github.com/hyperbadger/terraform-aws-eks-kubeconfig
 module "eks-kubeconfig" {
   source       = "hyperbadger/eks-kubeconfig/aws"
-  version      = "~> 2.0"
+  version      = "2.0.0"
   cluster_name = module.eks.cluster_name
   depends_on   = [module.eks]
 }
