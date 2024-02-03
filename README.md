@@ -27,16 +27,17 @@ Install the dependencies:
 Set the AWS Account credentials using SSO:
 
 ```bash
+# set the environment variables to use a specific profile.
+# e.g. use the pattern <aws-sso-session-name>-<aws-account-name>-<aws-account-role>-<aws-account-id>
+export AWS_PROFILE=example-dev-AdministratorAccess-123456
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset AWS_DEFAULT_REGION
 # set the account credentials.
 # see https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html#sso-configure-profile-token-auto-sso
 aws configure sso
 # dump the configured profile and sso-session.
 cat ~/.aws/config
-# set the environment variables to use a specific profile.
-export AWS_PROFILE=my-profile
-unset AWS_ACCESS_KEY_ID
-unset AWS_SECRET_ACCESS_KEY
-unset AWS_DEFAULT_REGION
 # show the user, user amazon resource name (arn), and the account id, of the
 # profile set in the AWS_PROFILE environment variable.
 aws sts get-caller-identity
@@ -51,6 +52,7 @@ Or, set the AWS Account credentials using an Access Key:
 #        https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey
 export AWS_ACCESS_KEY_ID='TODO'
 export AWS_SECRET_ACCESS_KEY='TODO'
+unset AWS_PROFILE
 # set the default region.
 export AWS_DEFAULT_REGION='eu-west-1'
 # show the user, user amazon resource name (arn), and the account id.
