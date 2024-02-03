@@ -95,6 +95,16 @@ kubectl cluster-info
 kubectl get nodes -o wide
 ```
 
+If for some reason the `kubeconfig.yml` is stale, you can re-created it, either
+with `make terraform-apply`, or:
+
+```bash
+rm "$KUBECONFIG"
+aws eks update-kubeconfig \
+  --region "$(terraform output -raw kubernetes_region)" \
+  --name "$(terraform output -raw kubernetes_cluster_name)"
+```
+
 Log in the container registry:
 
 **NB** You are logging in at the registry level. You are not logging in at the

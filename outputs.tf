@@ -19,6 +19,14 @@ output "images" {
   }
 }
 
+output "kubernetes_region" {
+  value = var.region
+}
+
+output "kubernetes_cluster_name" {
+  value = module.eks.cluster_name
+}
+
 output "kubernetes_oidc_issuer_url" {
   # e.g. https://oidc.eks.eu-west-1.amazonaws.com/id/DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
   value = module.eks.cluster_oidc_issuer_url
