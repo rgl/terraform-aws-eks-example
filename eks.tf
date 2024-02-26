@@ -2,7 +2,7 @@ locals {
   cluster_name = "${var.project}-${var.environment}"
 }
 
-# e.g. 1.27.7-20231230
+# e.g. 1.29.0-20240213
 # see https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html
 # see https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html
 # see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group#tracking-the-latest-eks-node-group-ami-releases

@@ -1,7 +1,7 @@
 ---
 # see https://kubernetes.io/docs/concepts/services-networking/service/#clusterip
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#service-v1-core
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#serviceport-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#service-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#serviceport-v1-core
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,9 +17,9 @@ spec:
       targetPort: web
 ---
 # see https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#daemonset-v1-apps
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#podtemplatespec-v1-core
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/#container-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#daemonset-v1-apps
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podtemplatespec-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -42,7 +42,7 @@ spec:
             - -listen=0.0.0.0:9000
           env:
             # see https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
-            # see https://github.com/kubernetes/kubernetes/blob/v1.27.8/test/e2e/common/node/downwardapi.go
+            # see https://github.com/kubernetes/kubernetes/blob/v1.29.2/test/e2e/common/node/downwardapi.go
             - name: EXAMPLE_NODE_NAME
               valueFrom:
                 fieldRef:
