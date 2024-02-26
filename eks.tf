@@ -15,7 +15,7 @@ data "aws_ssm_parameter" "eks_ami_release_version" {
 # see https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.0.1"
+  version = "20.4.0"
 
   cluster_name                   = local.cluster_name
   cluster_version                = var.cluster_version

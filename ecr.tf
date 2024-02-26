@@ -1,6 +1,6 @@
 locals {
   images = {
-    example = "docker.io/ruilopes/example-docker-buildx-go:v1.10.0"
+    example = "docker.io/ruilopes/example-docker-buildx-go:v1.11.0"
   }
 }
 
