@@ -2,14 +2,14 @@ output "registry_region" {
   # e.g. 123456.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example/example
   #                     ^^^^^^^^^
   #                     region
-  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr_repository["example"].repository_url)["region"]
+  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr_repository["example-app"].repository_url)["region"]
 }
 
 output "registry_domain" {
   # e.g. 123456.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example/example
   #      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   #      domain
-  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr_repository["example"].repository_url)["domain"]
+  value = regex("^(?P<domain>[^/]+\\.ecr\\.(?P<region>[a-z0-9-]+)\\.amazonaws\\.com)", module.ecr_repository["example-app"].repository_url)["domain"]
 }
 
 output "images" {

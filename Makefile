@@ -9,6 +9,7 @@ terraform-init:
 	terraform -v
 
 terraform-apply:
+	rm -f terraform-apply.log
 	terraform apply \
 		| tee terraform-apply.log
 

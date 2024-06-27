@@ -12,7 +12,7 @@ This will:
 * Create the Elastic Container Registry (ECR) repositories declared on the
   [`images` local variable](ecr.tf), and upload the corresponding container
   images.
-* Demonstrate how to manually deploy a Kubernetes application.
+* Demonstrate how to automatically deploy the [`example-app` workload](example-app.tf).
   * Expose as a Kubernetes `LoadBalancer` `Service`. Note that this results in the creation of an [EC2 Classic Load Balancer (CLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/introduction.html).
 
 # Usage (on a Ubuntu Desktop)
@@ -71,6 +71,7 @@ make terraform-init
 Launch the example:
 
 ```bash
+rm -f terraform.log
 make terraform-apply
 ```
 
@@ -126,7 +127,7 @@ Show the example image manifest that was uploaded into the created container
 image repository:
 
 ```bash
-image="$(terraform output --json images | jq -r .example)"
+image="$(terraform output --json images | jq -r .example_app)"
 crane manifest "$image" | jq .
 ```
 
@@ -137,43 +138,25 @@ docker logout \
   "$(terraform output -raw registry_domain)"
 ```
 
-Launch the example application, using the image that was uploaded into the
-created image repository:
+Access the `example-app` service from a [kubectl port-forward local port](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/):
 
 ```bash
-sed -E "s,ruilopes/example-docker-buildx-go:.+,$image,g" example-app.yml \
-  | kubectl apply -f -
-kubectl rollout status daemonset/example
-kubectl get pods,services
-```
-
-Access the service from a [kubectl port-forward local port](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/):
-
-```bash
-kubectl port-forward service/example 6789:80 &
+kubectl port-forward service/example-app 6789:80 &
 sleep 3 && printf '\n\n'
 wget -qO- http://localhost:6789
 kill %1 && sleep 3
 ```
 
-Access the service from the Internet:
+Access the `example-app` service from the Internet:
 
 ```bash
-example_domain="$(kubectl get service/example -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
-example_url="http://$example_domain"
-echo "example service url: $example_url"
+example_app_domain="$(kubectl get service/example-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
+example_app_url="http://$example_app_domain"
+echo "example-app service url: $example_app_url"
 # wait for the domain to resolve.
-while [ -z "$(dig +short "$example_domain")" ]; do sleep 5; done && dig "$example_domain"
+while [ -z "$(dig +short "$example_app_domain")" ]; do sleep 5; done && dig "$example_app_domain"
 # finally, access the service.
-wget -qO- "$example_url"
-```
-
-Destroy the example application:
-
-```bash
-sed -E "s,ruilopes/example-docker-buildx-go:.+,$image,g" example-app.yml \
-  | kubectl delete -f -
-kubectl get pods,services
+wget -qO- "$example_app_url"
 ```
 
 Destroy the example:
