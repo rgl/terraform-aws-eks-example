@@ -88,22 +88,22 @@ wget -qO- "$(terraform output -raw kubernetes_oidc_configuration_url)" \
   | jq
 ```
 
+Get the cluster `kubeconfig.yml` configuration file:
+
+```bash
+export KUBECONFIG="$PWD/kubeconfig.yml"
+rm -f "$KUBECONFIG"
+aws eks update-kubeconfig \
+  --region "$(terraform output -raw kubernetes_region)" \
+  --name "$(terraform output -raw kubernetes_cluster_name)"
+```
+
 Access the EKS cluster:
 
 ```bash
 export KUBECONFIG="$PWD/kubeconfig.yml"
 kubectl cluster-info
 kubectl get nodes -o wide
-```
-
-If for some reason the `kubeconfig.yml` is stale, you can re-created it, either
-with `make terraform-apply`, or:
-
-```bash
-rm "$KUBECONFIG"
-aws eks update-kubeconfig \
-  --region "$(terraform output -raw kubernetes_region)" \
-  --name "$(terraform output -raw kubernetes_cluster_name)"
 ```
 
 Log in the container registry:

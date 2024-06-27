@@ -61,18 +61,3 @@ module "eks" {
     }
   }
 }
-
-# see https://registry.terraform.io/modules/hyperbadger/eks-kubeconfig/aws
-# see https://github.com/hyperbadger/terraform-aws-eks-kubeconfig
-module "eks-kubeconfig" {
-  source       = "hyperbadger/eks-kubeconfig/aws"
-  version      = "2.0.0"
-  cluster_name = module.eks.cluster_name
-  depends_on   = [module.eks]
-}
-
-resource "local_file" "kubeconfig" {
-  filename        = "kubeconfig.yml"
-  content         = module.eks-kubeconfig.kubeconfig
-  file_permission = "0600"
-}
