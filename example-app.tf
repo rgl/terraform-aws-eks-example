@@ -2,12 +2,19 @@
 # see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#service-v1-core
 # see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#serviceport-v1-core
 # see https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_v1
+# see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.7/guide/service/annotations/
+# NB this creates a AWS Network Load Balancer (NLB).
 resource "kubernetes_service_v1" "example_app" {
   metadata {
     name = "example-app"
+    annotations = {
+      "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing",
+      "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "ip",
+    }
   }
   spec {
-    type = "LoadBalancer"
+    type                = "LoadBalancer"
+    load_balancer_class = "service.k8s.aws/nlb"
     selector = {
       app = "example-app"
     }
@@ -18,7 +25,10 @@ resource "kubernetes_service_v1" "example_app" {
       target_port = "web"
     }
   }
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+    module.eks_aws_load_balancer_controller,
+  ]
 }
 
 # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
@@ -125,5 +135,7 @@ resource "kubernetes_deployment_v1" "example_app" {
       }
     }
   }
-  depends_on = [module.eks]
+  depends_on = [
+    module.eks,
+  ]
 }

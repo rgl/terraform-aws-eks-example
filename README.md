@@ -13,7 +13,8 @@ This will:
   [`images` local variable](ecr.tf), and upload the corresponding container
   images.
 * Demonstrate how to automatically deploy the [`example-app` workload](example-app.tf).
-  * Expose as a Kubernetes `LoadBalancer` `Service`. Note that this results in the creation of an [EC2 Classic Load Balancer (CLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/introduction.html).
+  * Expose as a Kubernetes `LoadBalancer` `Service`.
+    * This results in the creation of an [EC2 Network Load Balancer (NLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html).
 
 # Usage (on a Ubuntu Desktop)
 
