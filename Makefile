@@ -22,7 +22,15 @@ terraform-state-list:
 terraform-graph:
 	terraform graph \
 		| dot -Tsvg >terraform-graph.svg
-	xdg-open terraform-graph.svg
+	inkscape terraform-graph.svg
+
+terraform-graph-plan-destroy:
+	terraform plan -destroy -out=tfplan -input=false
+	terraform graph -plan=tfplan -type=plan-destroy \
+		| dot -Tsvg >terraform-graph-plan-destroy.svg
+	inkscape terraform-graph-plan-destroy.svg
 
 terraform-destroy:
-	terraform destroy
+	rm -f terraform-destroy.log
+	terraform destroy \
+		| tee terraform-destroy.log

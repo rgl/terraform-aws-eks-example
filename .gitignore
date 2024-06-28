@@ -1,6 +1,7 @@
 .terraform/
 terraform.tfstate*
-terraform-graph.svg
+terraform-graph*.svg
+tfplan
 .vagrant/
 tmp/
 secrets.*
