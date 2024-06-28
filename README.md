@@ -165,16 +165,6 @@ Destroy the example:
 make terraform-destroy
 ```
 
-**NB** For some unknown reason, terraform shows the following Warning message. If you known how to fix it, please let me known!
-
-```
-╷
-│ Warning: EC2 Default Network ACL (acl-004fd974909c20839) not deleted, removing from state
-│
-│
-╵
-```
-
 List this repository dependencies (and which have newer versions):
 
 ```bash
