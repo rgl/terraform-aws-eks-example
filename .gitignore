@@ -4,7 +4,7 @@ terraform-graph*.svg
 tfplan
 .vagrant/
 tmp/
-secrets.*
+secrets*
 *.tmp.png
 *.log
 kubeconfig.yml
