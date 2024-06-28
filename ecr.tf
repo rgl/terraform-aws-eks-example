@@ -24,7 +24,7 @@ data "aws_caller_identity" "current" {}
 # see https://github.com/terraform-aws-modules/terraform-aws-ecr
 module "ecr_repository" {
   source  = "terraform-aws-modules/ecr/aws"
-  version = "1.6.0"
+  version = "2.2.1"
 
   for_each = local.images
 

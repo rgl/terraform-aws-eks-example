@@ -1,36 +1,36 @@
 # see https://github.com/hashicorp/terraform
 terraform {
-  required_version = "1.7.4"
+  required_version = "1.9.0"
   required_providers {
     # see https://registry.terraform.io/providers/hashicorp/aws
     # see https://github.com/hashicorp/terraform-provider-aws
     aws = {
       source  = "hashicorp/aws"
-      version = "5.38.0"
+      version = "5.56.0"
     }
     # see https://registry.terraform.io/providers/hashicorp/cloudinit
     # see https://github.com/hashicorp/terraform-provider-cloudinit
     cloudinit = {
       source  = "hashicorp/cloudinit"
-      version = "2.3.3"
+      version = "2.3.4"
     }
     # see https://registry.terraform.io/providers/hashicorp/kubernetes
     # see https://github.com/hashicorp/terraform-provider-kubernetes
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.26.0"
+      version = "2.31.0"
     }
     # see https://registry.terraform.io/providers/hashicorp/local
     # see https://github.com/hashicorp/terraform-provider-local
     local = {
       source  = "hashicorp/local"
-      version = "2.4.1"
+      version = "2.5.1"
     }
     # see https://registry.terraform.io/providers/hashicorp/time
     # see https://github.com/hashicorp/terraform-provider-time
     time = {
       source  = "hashicorp/time"
-      version = "0.10.0"
+      version = "0.11.2"
     }
     # see https://registry.terraform.io/providers/hashicorp/tls
     # see https://github.com/hashicorp/terraform-provider-tls
