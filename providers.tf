@@ -1,12 +1,12 @@
 # see https://github.com/hashicorp/terraform
 terraform {
-  required_version = "1.9.0"
+  required_version = "1.9.1"
   required_providers {
     # see https://registry.terraform.io/providers/hashicorp/aws
     # see https://github.com/hashicorp/terraform-provider-aws
     aws = {
       source  = "hashicorp/aws"
-      version = "5.56.0"
+      version = "5.57.0"
     }
     # see https://registry.terraform.io/providers/hashicorp/cloudinit
     # see https://github.com/hashicorp/terraform-provider-cloudinit
