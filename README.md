@@ -32,25 +32,54 @@ Set the AWS Account credentials using SSO, e.g.:
 # set the account credentials.
 # NB the aws cli stores these at ~/.aws/config.
 # NB this is equivalent to manually configuring SSO using aws configure sso.
+# see https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html#sso-configure-profile-token-manual
 # see https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html#sso-configure-profile-token-auto-sso
 cat >secrets-example.sh <<'EOF'
 # set the environment variables to use a specific profile.
+# NB use aws configure sso to configure these manually.
 # e.g. use the pattern <aws-sso-session>-<aws-account-id>-<aws-role-name>
-aws_sso_session='example'
-aws_sso_start_url='https://example.awsapps.com/start'
-aws_sso_region='eu-west-1'
-aws_sso_account_id='123456'
-aws_sso_role_name='AdministratorAccess'
+export aws_sso_session='example'
+export aws_sso_start_url='https://example.awsapps.com/start'
+export aws_sso_region='eu-west-1'
+export aws_sso_account_id='123456'
+export aws_sso_role_name='AdministratorAccess'
 export AWS_PROFILE="$aws_sso_session-$aws_sso_account_id-$aws_sso_role_name"
 unset AWS_ACCESS_KEY_ID
 unset AWS_SECRET_ACCESS_KEY
 unset AWS_DEFAULT_REGION
-aws configure set sso_session "$aws_sso_session"
-aws configure set sso_start_url "$aws_sso_start_url"
-aws configure set sso_region "$aws_sso_region"
-aws configure set sso_account_id "$aws_sso_account_id"
-aws configure set sso_role_name "$aws_sso_role_name"
-aws configure set region "$aws_sso_region"
+# configure the ~/.aws/config file.
+# NB unfortunately, I did not find a way to create the [sso-session] section
+#    inside the ~/.aws/config file using the aws cli. so, instead, manage that
+#    file using python.
+python3 <<'PY_EOF'
+import configparser
+import os
+aws_sso_session = os.getenv('aws_sso_session')
+aws_sso_start_url = os.getenv('aws_sso_start_url')
+aws_sso_region = os.getenv('aws_sso_region')
+aws_sso_account_id = os.getenv('aws_sso_account_id')
+aws_sso_role_name = os.getenv('aws_sso_role_name')
+aws_profile = os.getenv('AWS_PROFILE')
+config = configparser.ConfigParser()
+aws_config_directory_path = os.path.expanduser('~/.aws')
+aws_config_path = os.path.join(aws_config_directory_path, 'config')
+if os.path.exists(aws_config_path):
+  config.read(aws_config_path)
+config[f'sso-session {aws_sso_session}'] = {
+  'sso_start_url': aws_sso_start_url,
+  'sso_region': aws_sso_region,
+  'sso_registration_scopes': 'sso:account:access',
+}
+config[f'profile {aws_profile}'] = {
+  'sso_session': aws_sso_session,
+  'sso_account_id': aws_sso_account_id,
+  'sso_role_name': aws_sso_role_name,
+  'region': aws_sso_region,
+}
+os.makedirs(aws_config_directory_path, mode=0o700, exist_ok=True)
+with open(aws_config_path, 'w') as f:
+  config.write(f)
+PY_EOF
 unset aws_sso_start_url
 unset aws_sso_region
 unset aws_sso_session
