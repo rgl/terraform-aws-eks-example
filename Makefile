@@ -1,5 +1,6 @@
 export CHECKPOINT_DISABLE=1
-export TF_LOG=TRACE
+# TF_LOG can be one of: ERROR, WARN, INFO, DEBUG, TRACE.
+export TF_LOG=DEBUG
 export TF_LOG_PATH=terraform.log
 
 all: terraform-apply
