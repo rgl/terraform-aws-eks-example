@@ -543,6 +543,33 @@ aws ec2 describe-volumes \
 aws ec2 delete-volume --volume-id vol-1234567890abcdef0
 ```
 
+List the AWS Application Load Balancers (ALB):
+
+```bash
+kubernetes_cluster_name="$(terraform output -raw kubernetes_cluster_name)"
+aws elbv2 describe-load-balancers \
+  --query 'LoadBalancers[?Type==`application`].LoadBalancerArn' \
+  --output json \
+  | jq -r '.[]' \
+  | while read arn; do
+  tags="$(aws elbv2 describe-tags \
+    --resource-arns "$arn" \
+    --query 'TagDescriptions[0].Tags' \
+    --output json \
+    | jq -c)"
+  cluster_tag="$(jq -r \
+    --arg kubernetes_cluster_name "$kubernetes_cluster_name" \
+    '.[] | select(.Key=="elbv2.k8s.aws/cluster" and .Value==$kubernetes_cluster_name) | .Value' \
+    <<<"$tags")"
+  if [ -n "$cluster_tag" ]; then
+    aws elbv2 describe-load-balancers \
+      --load-balancer-arns "$arn" \
+      --query 'LoadBalancers[0].{LoadBalancerName:LoadBalancerName, DNSName:DNSName, Scheme:Scheme}' \
+      --output text
+  fi
+done
+```
+
 Destroy the example:
 
 ```bash
