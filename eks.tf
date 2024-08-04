@@ -198,6 +198,13 @@ module "eks_aws_addons" {
     aws_route53_zone.ingress.arn,
   ]
 
+  # install argo-cd.
+  enable_argocd = true
+  argocd = {
+    wait   = true
+    values = [jsonencode(local.argocd_helm_values)]
+  }
+
   helm_releases = {
     # install trust-manager.
     # see https://cert-manager.io/docs/tutorials/getting-started-with-trust-manager/

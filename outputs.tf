@@ -54,6 +54,10 @@ output "gitea_password" {
   sensitive = true
 }
 
+output "argocd_url" {
+  value = "https://${local.argocd_fqdn}"
+}
+
 output "example_app_url" {
   value = "https://${local.example_app_fqdn}"
 }

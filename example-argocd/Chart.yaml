@@ -1,0 +1,5 @@
+apiVersion: v2
+name: example-argocd
+description: A example Helm chart for Argo CD
+version: 0.1.0
+appVersion: 0.1.0

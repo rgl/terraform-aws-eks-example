@@ -1,0 +1,2 @@
+ingressDomain: aws-eks-example-dev.example.test
+replicas: 1
