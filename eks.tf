@@ -168,6 +168,17 @@ module "eks_aws_addons" {
   cluster_version   = var.cluster_version
   oidc_provider_arn = module.eks.oidc_provider_arn
 
+  eks_addons = {
+    # install ebs-csi add-on.
+    # see https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
+    # see https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
+    # see https://github.com/kubernetes-sigs/aws-ebs-csi-driver
+    aws-ebs-csi-driver = {
+      most_recent              = true
+      service_account_role_arn = module.aws_ebs_csi_irsa.iam_role_arn
+    }
+  }
+
   # install external-dns.
   enable_external_dns = true
   external_dns_route53_zone_arns = [
@@ -239,5 +250,37 @@ resource "null_resource" "eks" {
     module.eks,
     module.eks_aws_load_balancer_controller,
     module.eks_aws_addons,
+    kubernetes_storage_class_v1.gp3,
   ]
+}
+
+# see https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest/submodules/iam-role-for-service-accounts-eks
+# see https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest
+module "aws_ebs_csi_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.42.0"
+
+  role_name_prefix = "${module.eks.cluster_name}-ebs-csi-"
+
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
+}
+
+# see https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class_v1
+resource "kubernetes_storage_class_v1" "gp3" {
+  metadata {
+    name = "gp3"
+  }
+  storage_provisioner = "ebs.csi.aws.com"
+  parameters = {
+    type = "gp3"
+  }
+  reclaim_policy      = "Delete"
+  volume_binding_mode = "WaitForFirstConsumer"
 }

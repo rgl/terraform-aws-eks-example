@@ -8,7 +8,8 @@ This will:
 
 * Create an Elastic Kubernetes Service (EKS)-based Kubernetes cluster.
   * Use the [Bottlerocket OS](https://aws.amazon.com/bottlerocket/).
-  * Enable the [VPC CNI cluster addon](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html).
+  * Enable the [VPC CNI cluster add-on](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html).
+  * Enable the [EBS CSI cluster add-on](https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html).
   * Install [external-dns](https://github.com/kubernetes-sigs/external-dns).
     * Manages DNS Resource Records.
   * Install [cert-manager](https://github.com/cert-manager/cert-manager).
@@ -228,6 +229,13 @@ Access the EKS cluster:
 export KUBECONFIG="$PWD/kubeconfig.yml"
 kubectl cluster-info
 kubectl get nodes -o wide
+kubectl get ingressclass
+kubectl get storageclass
+# NB notice that the ReclaimPolicy is Delete. this means that, when we delete a
+#    PersistentVolumeClaim or PersistentVolume, the volume will be deleted from
+#    the AWS account.
+kubectl describe storageclass/gp2
+kubectl describe storageclass/gp3
 ```
 
 List the installed Helm chart releases:
