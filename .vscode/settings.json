@@ -4,6 +4,8 @@
         "Bottlerocket",
         "buildx",
         "daemonset",
+        "finalizer",
+        "gitea",
         "IRSA",
         "KUBECONFIG",
         "oidc",

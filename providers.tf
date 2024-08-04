@@ -38,6 +38,12 @@ terraform {
       source  = "hashicorp/null"
       version = "3.2.2"
     }
+    # see https://registry.terraform.io/providers/hashicorp/random
+    # see https://github.com/hashicorp/terraform-provider-random
+    random = {
+      source  = "hashicorp/random"
+      version = "3.6.2"
+    }
     # see https://registry.terraform.io/providers/hashicorp/time
     # see https://github.com/hashicorp/terraform-provider-time
     time = {

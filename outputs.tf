@@ -45,6 +45,15 @@ output "ingress_domain_name_servers" {
   value = aws_route53_zone.ingress.name_servers
 }
 
+output "gitea_url" {
+  value = "https://${local.gitea_fqdn}"
+}
+
+output "gitea_password" {
+  value     = random_password.gitea.result
+  sensitive = true
+}
+
 output "example_app_url" {
   value = "https://${local.example_app_fqdn}"
 }

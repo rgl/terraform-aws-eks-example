@@ -18,6 +18,8 @@ This will:
     * Manages TLS CA certificate bundles.
   * Install [reloader](https://github.com/stakater/reloader).
     * Reloads (restarts) pods when their configmaps or secrets change.
+  * Install [Gitea](https://github.com/go-gitea/gitea).
+    * Manages git repositories.
 * Create the Elastic Container Registry (ECR) repositories declared on the
   [`images` local variable](ecr.tf), and upload the corresponding container
   images.
@@ -304,6 +306,49 @@ echo "example-app service url: $example_app_url"
 while [ -z "$(dig +short "$example_app_domain")" ]; do sleep 5; done && dig "$example_app_domain"
 # finally, access the service.
 wget -qO- "$example_app_url"
+```
+
+Access Gitea:
+
+```bash
+gitea_url="$(terraform output -raw gitea_url)"
+gitea_password="$(terraform output -raw gitea_password)"
+echo "gitea_url: $gitea_url"
+echo "gitea_username: gitea"
+echo "gitea_password: $gitea_password"
+xdg-open "$gitea_url"
+```
+
+Destroy the stateful applications and their data:
+
+**TODO:** Somehow, do this automatically from `terraform destroy`.
+
+```bash
+kubernetes_cluster_name="$(terraform output -raw kubernetes_cluster_name)"
+
+# uninstall gitea.
+helm uninstall --namespace gitea gitea --timeout 10m
+
+# delete the gitea pvc and pv.
+# NB the pvc is not automatically deleted because it also has a finalizer.
+kubectl --namespace gitea get pvc,pv
+kubectl --namespace gitea get pvc/gitea
+kubectl --namespace gitea delete pvc/gitea
+
+# wait until the pvc and pv are deleted.
+kubectl --namespace gitea get pvc,pv
+
+# list all volumes that might still be associated with this kubernetes cluster.
+# NB if this list is not empty, you should add another section to this file to
+#    explicitly delete it, instead of using aws ec2 delete-volume.
+aws ec2 describe-volumes \
+  --filters "Name=tag:kubernetes.io/cluster/$kubernetes_cluster_name,Values=*" \
+  --query "Volumes[*].{VolumeId:VolumeId,Name:Tags[?Key=='Name']|[0].Value,InstanceId:Attachments[0].InstanceId}" \
+  --output json \
+  | jq
+
+# if required, delete a volume by id. e.g.:
+aws ec2 delete-volume --volume-id vol-1234567890abcdef0
 ```
 
 Destroy the example:
