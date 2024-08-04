@@ -9,12 +9,25 @@ This will:
 * Create an Elastic Kubernetes Service (EKS)-based Kubernetes cluster.
   * Use the [Bottlerocket OS](https://aws.amazon.com/bottlerocket/).
   * Enable the [VPC CNI cluster addon](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html).
+  * Install [external-dns](https://github.com/kubernetes-sigs/external-dns).
+    * Manages DNS Resource Records.
+  * Install [cert-manager](https://github.com/cert-manager/cert-manager).
+    * Manages TLS certificate.
+  * Install [trust-manager](https://github.com/cert-manager/trust-manager).
+    * Manages TLS CA certificate bundles.
+  * Install [reloader](https://github.com/stakater/reloader).
+    * Reloads (restarts) pods when their configmaps or secrets change.
 * Create the Elastic Container Registry (ECR) repositories declared on the
   [`images` local variable](ecr.tf), and upload the corresponding container
   images.
+* Create a public DNS Zone using [Amazon Route 53](https://aws.amazon.com/route53/).
+  * Note that you need to configure the parent DNS Zone to delegate to this DNS Zone name servers.
+  * Use [external-dns](https://github.com/kubernetes-sigs/external-dns) to create the Ingress DNS Resource Records in the DNS Zone.
 * Demonstrate how to automatically deploy the [`example-app` workload](example-app.tf).
-  * Expose as a Kubernetes `LoadBalancer` `Service`.
-    * This results in the creation of an [EC2 Network Load Balancer (NLB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html).
+  * Expose as a Kubernetes `Ingress` `Service`.
+    * Use a sub-domain in the DNS Zone.
+    * Use a public Certificate managed by [Amazon Certificate Manager](https://aws.amazon.com/certificate-manager/) and issued by the public [Amazon Root CA](https://www.amazontrust.com/repository/).
+    * Note that this results in the creation of an [EC2 Application Load Balancer (ALB)](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html).
 
 # Usage (on a Ubuntu Desktop)
 
@@ -118,7 +131,19 @@ Load the secrets:
 source secrets-example.sh
 ```
 
-Review `main.tf`.
+Review the variables inside the [`inputs.tf`](inputs.tf) file, and, at least,
+modify the `ingress_domain` variable to a DNS Zone that is a child of a
+DNS Zone that you control. The `ingress_domain` DNS Zone will be created by
+this example. The DNS Zone will be hosted in the Amazon Route 53 DNS name
+servers, e.g.:
+
+```bash
+cat >terraform.tfvars <<EOF
+environment    = "dev"
+project        = "aws-eks-example"
+ingress_domain = "aws-eks-example-dev.example.test"
+EOF
+```
 
 Initialize terraform:
 
@@ -130,6 +155,46 @@ Launch the example:
 
 ```bash
 rm -f terraform.log
+make terraform-apply
+```
+
+The first launch will fail while trying to create the `aws_acm_certificate`
+resource. You must delegate the DNS Zone, as described bellow, and then launch
+the example again to finish the provisioning.
+
+Show the ingress domain and the ingress DNS Zone name servers:
+
+```bash
+ingress_domain="$(terraform output -raw ingress_domain)"
+ingress_domain_name_servers="$(
+  terraform output -json ingress_domain_name_servers \
+  | jq -r '.[]')"
+printf "ingress_domain:\n\n$ingress_domain\n\n"
+printf "ingress_domain_name_servers:\n\n$ingress_domain_name_servers\n\n"
+```
+
+Using your parent ingress domain DNS Registrar or DNS Hosting provider, delegate the `ingress_domain` DNS Zone to the returned `ingress_domain_name_servers` DNS name servers. For example, at the parent DNS Zone, add:
+
+```plain
+aws-eks-example-dev NS ns-123.awsdns-11.com.
+aws-eks-example-dev NS ns-321.awsdns-34.net.
+aws-eks-example-dev NS ns-456.awsdns-56.org.
+aws-eks-example-dev NS ns-948.awsdns-65.co.uk.
+```
+
+Verify the delegation:
+
+```bash
+ingress_domain="$(terraform output -raw ingress_domain)"
+ingress_domain_name_server="$(
+  terraform output -json ingress_domain_name_servers | jq -r '.[0]')"
+dig ns "$ingress_domain" "@$ingress_domain_name_server" # verify with amazon route 53 dns.
+dig ns "$ingress_domain"                                # verify with your local resolver.
+```
+
+Launch the example again, this time, no error is expected:
+
+```bash
 make terraform-apply
 ```
 
@@ -163,6 +228,22 @@ Access the EKS cluster:
 export KUBECONFIG="$PWD/kubeconfig.yml"
 kubectl cluster-info
 kubectl get nodes -o wide
+```
+
+List the installed Helm chart releases:
+
+```bash
+helm list --all-namespaces
+```
+
+Show a helm release status, the user supplied values, all the values, and the
+chart managed kubernetes resources:
+
+```bash
+helm -n external-dns status external-dns
+helm -n external-dns get values external-dns
+helm -n external-dns get values external-dns --all
+helm -n external-dns get manifest external-dns
 ```
 
 Log in the container registry:
@@ -208,8 +289,8 @@ kill %1 && sleep 3
 Access the `example-app` service from the Internet:
 
 ```bash
-example_app_domain="$(kubectl get service/example-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"
-example_app_url="http://$example_app_domain"
+example_app_url="$(terraform output -raw example_app_url)"
+example_app_domain="${example_app_url#https://}"
 echo "example-app service url: $example_app_url"
 # wait for the domain to resolve.
 while [ -z "$(dig +short "$example_app_domain")" ]; do sleep 5; done && dig "$example_app_domain"

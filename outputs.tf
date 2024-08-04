@@ -36,3 +36,15 @@ output "kubernetes_oidc_configuration_url" {
   # e.g. https://oidc.eks.eu-west-1.amazonaws.com/id/DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD/.well-known/openid-configuration
   value = "${module.eks.cluster_oidc_issuer_url}/.well-known/openid-configuration"
 }
+
+output "ingress_domain" {
+  value = var.ingress_domain
+}
+
+output "ingress_domain_name_servers" {
+  value = aws_route53_zone.ingress.name_servers
+}
+
+output "example_app_url" {
+  value = "https://${local.example_app_fqdn}"
+}

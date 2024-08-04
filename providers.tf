@@ -32,6 +32,12 @@ terraform {
       source  = "hashicorp/local"
       version = "2.5.1"
     }
+    # see https://registry.terraform.io/providers/hashicorp/null
+    # see https://github.com/hashicorp/terraform-provider-null
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.2"
+    }
     # see https://registry.terraform.io/providers/hashicorp/time
     # see https://github.com/hashicorp/terraform-provider-time
     time = {
