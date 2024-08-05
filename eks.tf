@@ -1,6 +1,14 @@
 locals {
   cluster_name = "${var.project}-${var.environment}"
 
+  # see https://artifacthub.io/packages/helm/external-dns/external-dns
+  # renovate: datasource=helm depName=external-dns registryUrl=https://kubernetes-sigs.github.io/external-dns
+  external_dns_chart_version = "1.14.5" # app version 0.14.2
+
+  # see https://artifacthub.io/packages/helm/cert-manager/cert-manager
+  # renovate: datasource=helm depName=cert-manager registryUrl=https://charts.jetstack.io
+  cert_manager_chart_version = "1.15.2"
+
   # see https://github.com/cert-manager/trust-manager
   # see https://artifacthub.io/packages/helm/cert-manager/trust-manager
   # renovate: datasource=helm depName=trust-manager registryUrl=https://charts.jetstack.io
@@ -181,6 +189,9 @@ module "eks_aws_addons" {
 
   # install external-dns.
   enable_external_dns = true
+  external_dns = {
+    chart_version = local.external_dns_chart_version
+  }
   external_dns_route53_zone_arns = [
     aws_route53_zone.ingress.arn,
   ]
@@ -191,6 +202,7 @@ module "eks_aws_addons" {
     wait                 = true
     role_name            = "${module.eks.cluster_name}-cert-manager-irsa"
     role_name_use_prefix = false
+    chart_version        = local.cert_manager_chart_version
     values = [jsonencode({
     })]
   }
@@ -201,8 +213,9 @@ module "eks_aws_addons" {
   # install argo-cd.
   enable_argocd = true
   argocd = {
-    wait   = true
-    values = [jsonencode(local.argocd_helm_values)]
+    wait          = true
+    chart_version = local.argocd_chart_version
+    values        = [jsonencode(local.argocd_helm_values)]
   }
 
   helm_releases = {

@@ -1,6 +1,11 @@
 locals {
   argocd_fqdn = "argocd.${var.ingress_domain}"
 
+  # see https://artifacthub.io/packages/helm/argo/argo-cd
+  # see https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+  # renovate: datasource=helm depName=argo-cd registryUrl=https://argoproj.github.io/argo-helm
+  argocd_chart_version = "7.3.11" # app version 2.11.7.
+
   # NB the default values are described at:
   #       https://github.com/argoproj/argo-helm/blob/argo-cd-7.3.11/charts/argo-cd/values.yaml
   #    NB make sure you are seeing the same version of the chart that you are installing.

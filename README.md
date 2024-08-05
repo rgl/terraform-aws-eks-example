@@ -288,15 +288,15 @@ It should be something like:
 ghcr.io/dexidp/dex:v2.38.0
 ghcr.io/stakater/reloader:v1.0.119
 gitea/gitea:1.22.1-rootless
-public.ecr.aws/docker/library/redis:7.0.15-alpine
+public.ecr.aws/docker/library/redis:7.2.4-alpine
 public.ecr.aws/eks/aws-load-balancer-controller:v2.7.1
-quay.io/argoproj/argocd:v2.10.0
-quay.io/jetstack/cert-manager-cainjector:v1.14.3
-quay.io/jetstack/cert-manager-controller:v1.14.3
+quay.io/argoproj/argocd:v2.11.7
+quay.io/jetstack/cert-manager-cainjector:v1.15.2
+quay.io/jetstack/cert-manager-controller:v1.15.2
 quay.io/jetstack/cert-manager-package-debian:20210119.0
-quay.io/jetstack/cert-manager-webhook:v1.14.3
+quay.io/jetstack/cert-manager-webhook:v1.15.2
 quay.io/jetstack/trust-manager:v0.12.0
-registry.k8s.io/external-dns/external-dns:v0.14.0
+registry.k8s.io/external-dns/external-dns:v0.14.2
 ruilopes/example-docker-buildx-go:v1.11.0
 ```
 
