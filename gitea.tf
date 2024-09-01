@@ -125,7 +125,7 @@ resource "aws_route53_record" "gitea_certificate_validation" {
 }
 
 # see https://kubernetes.io/docs/concepts/services-networking/ingress/
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#ingress-v1-networking-k8s-io
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#ingress-v1-networking-k8s-io
 # see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.7/guide/ingress/annotations/
 # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html#describe-ssl-policies
 # see https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/ingress_v1

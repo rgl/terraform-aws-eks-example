@@ -44,7 +44,7 @@ resource "aws_route53_record" "example_app_certificate_validation" {
 }
 
 # see https://kubernetes.io/docs/concepts/services-networking/ingress/
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#ingress-v1-networking-k8s-io
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#ingress-v1-networking-k8s-io
 # see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.7/guide/ingress/annotations/
 # see https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html#describe-ssl-policies
 # see https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/ingress_v1
@@ -86,8 +86,8 @@ resource "kubernetes_ingress_v1" "example_app" {
 }
 
 # see https://kubernetes.io/docs/concepts/services-networking/service/#clusterip
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#service-v1-core
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#serviceport-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#service-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#serviceport-v1-core
 # see https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_v1
 # see https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.7/guide/service/annotations/
 # NB this creates a AWS Network Load Balancer (NLB).
@@ -113,9 +113,9 @@ resource "kubernetes_service_v1" "example_app" {
 }
 
 # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#deployment-v1-apps
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#podtemplatespec-v1-core
-# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#container-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#deployment-v1-apps
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#podtemplatespec-v1-core
+# see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#container-v1-core
 # see https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/deployment_v1
 resource "kubernetes_deployment_v1" "example_app" {
   metadata {
@@ -146,7 +146,7 @@ resource "kubernetes_deployment_v1" "example_app" {
             "-listen=0.0.0.0:9000"
           ]
           # see https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
-          # see https://github.com/kubernetes/kubernetes/blob/v1.29.2/test/e2e/common/node/downwardapi.go
+          # see https://github.com/kubernetes/kubernetes/blob/v1.30.0/test/e2e/common/node/downwardapi.go
           env {
             name = "EXAMPLE_NODE_NAME"
             value_from {

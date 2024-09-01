@@ -276,13 +276,13 @@ It should be something like:
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni-init:v1.18.3-eksbuild.2
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni:v1.18.3-eksbuild.2
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/aws-ebs-csi-driver:v1.34.0
-602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/coredns:v1.11.1-eksbuild.4
+602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/coredns:v1.11.1-eksbuild.8
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-attacher:v4.6.1-eks-1-30-10
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-node-driver-registrar:v2.11.0-eks-1-30-10
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-provisioner:v5.0.1-eks-1-30-10
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-resizer:v1.11.1-eks-1-30-10
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v8.0.1-eks-1-30-12
-602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.29.0-minimal-eksbuild.1
+602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.30.0-minimal-eksbuild.3
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.13.0-eks-1-30-10
 960774936715.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example-dev/example-app:v1.12.0
 ghcr.io/dexidp/dex:v2.38.0
