@@ -303,4 +303,9 @@ resource "kubernetes_storage_class_v1" "gp3" {
   }
   reclaim_policy      = "Delete"
   volume_binding_mode = "WaitForFirstConsumer"
+  depends_on = [
+    module.eks,
+    module.eks_aws_load_balancer_controller,
+    module.eks_aws_addons,
+  ]
 }
