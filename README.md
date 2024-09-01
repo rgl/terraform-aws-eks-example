@@ -272,32 +272,32 @@ kubectl get pods --all-namespaces \
 It should be something like:
 
 ```bash
-602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon/aws-network-policy-agent:v1.1.2-eksbuild.1
-602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni-init:v1.18.3-eksbuild.1
-602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni:v1.18.3-eksbuild.1
-602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/aws-ebs-csi-driver:v1.33.0
+602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon/aws-network-policy-agent:v1.1.2-eksbuild.2
+602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni-init:v1.18.3-eksbuild.2
+602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni:v1.18.3-eksbuild.2
+602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/aws-ebs-csi-driver:v1.34.0
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/coredns:v1.11.1-eksbuild.4
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-attacher:v4.6.1-eks-1-30-10
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-node-driver-registrar:v2.11.0-eks-1-30-10
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-provisioner:v5.0.1-eks-1-30-10
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-resizer:v1.11.1-eks-1-30-10
-602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v8.0.1-eks-1-30-10
+602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v8.0.1-eks-1-30-12
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.29.0-minimal-eksbuild.1
 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.13.0-eks-1-30-10
-960774936715.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example-dev/example-app:v1.11.0
+960774936715.dkr.ecr.eu-west-1.amazonaws.com/aws-eks-example-dev/example-app:v1.12.0
 ghcr.io/dexidp/dex:v2.38.0
-ghcr.io/stakater/reloader:v1.0.119
+ghcr.io/stakater/reloader:v1.1.0
 gitea/gitea:1.22.1-rootless
 public.ecr.aws/docker/library/redis:7.2.4-alpine
 public.ecr.aws/eks/aws-load-balancer-controller:v2.7.1
-quay.io/argoproj/argocd:v2.11.7
-quay.io/jetstack/cert-manager-cainjector:v1.15.2
-quay.io/jetstack/cert-manager-controller:v1.15.2
+quay.io/argoproj/argocd:v2.12.3
+quay.io/jetstack/cert-manager-cainjector:v1.15.3
+quay.io/jetstack/cert-manager-controller:v1.15.3
 quay.io/jetstack/cert-manager-package-debian:20210119.0
-quay.io/jetstack/cert-manager-webhook:v1.15.2
+quay.io/jetstack/cert-manager-webhook:v1.15.3
 quay.io/jetstack/trust-manager:v0.12.0
 registry.k8s.io/external-dns/external-dns:v0.14.2
-ruilopes/example-docker-buildx-go:v1.11.0
+ruilopes/example-docker-buildx-go:v1.12.0
 ```
 
 Log in the container registry:

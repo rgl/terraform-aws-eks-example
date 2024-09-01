@@ -7,7 +7,7 @@ locals {
 
   # see https://artifacthub.io/packages/helm/cert-manager/cert-manager
   # renovate: datasource=helm depName=cert-manager registryUrl=https://charts.jetstack.io
-  cert_manager_chart_version = "1.15.2"
+  cert_manager_chart_version = "1.15.3"
 
   # see https://github.com/cert-manager/trust-manager
   # see https://artifacthub.io/packages/helm/cert-manager/trust-manager
@@ -17,7 +17,7 @@ locals {
   # see https://github.com/stakater/reloader
   # see https://artifacthub.io/packages/helm/stakater/reloader
   # renovate: datasource=helm depName=reloader registryUrl=https://stakater.github.io/stakater-charts
-  reloader_chart_version = "1.0.119"
+  reloader_chart_version = "1.1.0"
 }
 
 # see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone
@@ -69,7 +69,7 @@ resource "aws_route53_record" "ingress_ns" {
 # see https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.20.0"
+  version = "20.24.0"
 
   cluster_name                   = local.cluster_name
   cluster_version                = var.cluster_version
@@ -108,7 +108,7 @@ module "eks" {
       # use the bottlerocket os.
       # see https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami-bottlerocket.html
       # see https://docs.aws.amazon.com/eks/latest/userguide/update-managed-node-group.html
-      # see https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v20.20.0/modules/eks-managed-node-group/main.tf#L354
+      # see https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v20.24.0/modules/eks-managed-node-group/main.tf#L356
       ami_type = "BOTTLEROCKET_x86_64"
 
       instance_types = ["m5.large"]
@@ -278,7 +278,7 @@ resource "null_resource" "eks" {
 # see https://registry.terraform.io/modules/terraform-aws-modules/iam/aws/latest
 module "aws_ebs_csi_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.42.0"
+  version = "5.44.0"
 
   role_name_prefix = "${module.eks.cluster_name}-ebs-csi-"
 

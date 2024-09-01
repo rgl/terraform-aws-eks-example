@@ -4,10 +4,10 @@ locals {
   # see https://artifacthub.io/packages/helm/argo/argo-cd
   # see https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
   # renovate: datasource=helm depName=argo-cd registryUrl=https://argoproj.github.io/argo-helm
-  argocd_chart_version = "7.3.11" # app version 2.11.7.
+  argocd_chart_version = "7.5.0" # app version 2.12.3.
 
   # NB the default values are described at:
-  #       https://github.com/argoproj/argo-helm/blob/argo-cd-7.3.11/charts/argo-cd/values.yaml
+  #       https://github.com/argoproj/argo-helm/blob/argo-cd-7.5.0/charts/argo-cd/values.yaml
   #    NB make sure you are seeing the same version of the chart that you are installing.
   # NB this disables the tls between argocd components, that is, the internal
   #    cluster traffic does not uses tls, and only the ingress uses tls.

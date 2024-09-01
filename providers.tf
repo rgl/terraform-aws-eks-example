@@ -1,12 +1,12 @@
 # see https://github.com/hashicorp/terraform
 terraform {
-  required_version = "1.9.3"
+  required_version = "1.9.5"
   required_providers {
     # see https://registry.terraform.io/providers/hashicorp/aws
     # see https://github.com/hashicorp/terraform-provider-aws
     aws = {
       source  = "hashicorp/aws"
-      version = "5.61.0"
+      version = "5.65.0"
     }
     # see https://registry.terraform.io/providers/hashicorp/cloudinit
     # see https://github.com/hashicorp/terraform-provider-cloudinit
@@ -18,13 +18,13 @@ terraform {
     # see https://github.com/hashicorp/terraform-provider-helm
     helm = {
       source  = "hashicorp/helm"
-      version = "2.14.0"
+      version = "2.15.0"
     }
     # see https://registry.terraform.io/providers/hashicorp/kubernetes
     # see https://github.com/hashicorp/terraform-provider-kubernetes
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.31.0"
+      version = "2.32.0"
     }
     # see https://registry.terraform.io/providers/hashicorp/local
     # see https://github.com/hashicorp/terraform-provider-local

@@ -7,7 +7,7 @@ locals {
     example-app = {
       name = "docker.io/ruilopes/example-docker-buildx-go"
       # renovate: datasource=docker depName=ruilopes/example-docker-buildx-go
-      tag = "v1.11.0"
+      tag = "v1.12.0"
     }
   }
   images = {
